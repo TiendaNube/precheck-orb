@@ -3,6 +3,8 @@ version: 2.1
 orbs:
   # Replace this with your own!
   precheck: tiendanube/precheck@<<pipeline.parameters.dev-orb-version>>
+  # Python unittest
+  python: circleci/python@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   bats: circleci/bats@1.0
   shellcheck: circleci/shellcheck@2.0
@@ -80,6 +82,11 @@ workflows:
       # version will be published or if publishing should
       # be skipped.
       # e.g. [semver:patch] will cause a patch version to be published.
+      - python/test:
+          name: job-test-poetry
+          pkg-manager: poetry
+          test-tool: pytest
+          app-dir: ~/project/tests
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: tiendanube/precheck
           context: orb-publishing

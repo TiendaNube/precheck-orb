@@ -1,12 +1,12 @@
 description: >
-  This command validate the name to use in k8s namespace.
+  This command is a Naming Convention Validation to use in k8s namespace.
 parameters:
   name:
     type: string
-    description: "Repository or Branch Name for naming validation"
+    description: "Repository or Branch Name for naming convention validation"
 steps:
   - run:
       environment:
-        BRANCH_NAME: <<parameters.name>>
-      name: Naming Validation
-      command: <<include(scripts/test_naming_validation.py)>>
+        NAME_TO_VALIDATE: <<parameters.name_to_validate>>
+      name: Naming Convention Validation
+      command: <<include(scripts/naming_validation.py)>>

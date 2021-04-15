@@ -1,7 +1,7 @@
 import re
 import os
 
-name = os.getenv('BRANCH_NAME')
+name = os.getenv('NAME_TO_VALIDATE')
 
 
 def check_upper():

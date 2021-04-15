@@ -1,12 +1,12 @@
-description: Naming Validation, validate the name to use in k8s namespace
+description: Naming Convention Validation to use in k8s namespace.
 
 executor: default
 
 parameters:
-  name:
+  name_to_validate:
     type: string
-    description: "Repository or Branch Name for naming validation"
+    description: "Repository or Branch Name for naming convention validation"
 
 steps:
   - naming-validation:
-      name: << parameters.name >>
+      name_to_validate: << parameters.name_to_validate >>

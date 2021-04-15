@@ -34,8 +34,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Test"
-          working_directory: ~/project/tests
+          name: "Test Naming Convention"
           command: |
             python -m unittest discover -s precheck-orb/tests -p test_naming_validation.py
 

@@ -44,6 +44,7 @@ workflows:
       - orb-tools/pack # Pack orb source
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
+          context: microservices
           requires:
             - orb-tools/lint
             - orb-tools/pack

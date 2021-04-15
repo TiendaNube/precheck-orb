@@ -8,5 +8,5 @@ parameters:
     description: "Repository or Branch Name for naming convention validation"
 
 steps:
-  - naming-validation:
+  - naming_validation_cmd:
       name_to_validate: << parameters.name_to_validate >>

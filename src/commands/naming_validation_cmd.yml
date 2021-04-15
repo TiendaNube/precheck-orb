@@ -12,3 +12,4 @@ steps:
         NAME_TO_VALIDATE: <<parameters.name_to_validate>>
       name: Naming Convention Validation
       command: <<include(scripts/naming_validation.py)>>
+

@@ -44,7 +44,6 @@ workflows:
       - orb-tools/pack # Pack orb source
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
-          context: microservices
           requires:
             - orb-tools/lint
             - orb-tools/pack
@@ -63,7 +62,8 @@ workflows:
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - integration-test-naming
+      - integration-test-naming:
+          context: microservices
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: tiendanube/precheck
           context: orbs

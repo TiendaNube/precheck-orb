@@ -54,7 +54,7 @@ workflows:
           alpha-version-ref: "dev:alpha"
           publish-token-variable: "CIRCLE_TOKEN"
           publish-alpha-version: true
-          context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
+          context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user..
           requires:
             - orb-tools/lint
             - orb-tools/pack

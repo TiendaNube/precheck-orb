@@ -6,11 +6,8 @@ display:
   source_url: "https://github.com/TiendaNube/precheck-orb"
 
 orbs:
-  #precheck: tiendanube/precheck@<<pipeline.parameters.dev-orb-version>>
   python: circleci/python@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
-  bats: circleci/bats@1.0
-  shellcheck: circleci/shellcheck@2.0
 
 # Pipeline Parameters
 ## These parameters are used internally by orb-tools. Skip to the Jobs section.

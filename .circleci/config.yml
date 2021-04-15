@@ -7,7 +7,7 @@ display:
 
 orbs:
   python: circleci/python@<<pipeline.parameters.dev-orb-version>>
-  orb-tools: circleci/orb-tools@10.0
+  orb-tools: circleci/orb-tools@9.0.0
 
 # Pipeline Parameters
 ## These parameters are used internally by orb-tools. Skip to the Jobs section.

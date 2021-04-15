@@ -1,9 +1,12 @@
 version: 2.1
+description: >
+  Pre-check validations
+
+display:
+  source_url: "https://github.com/TiendaNube/precheck-orb"
 
 orbs:
-  # Replace this with your own!
-  precheck: tiendanube/precheck@<<pipeline.parameters.dev-orb-version>>
-  # Python unittest
+  #precheck: tiendanube/precheck@<<pipeline.parameters.dev-orb-version>>
   python: circleci/python@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   bats: circleci/bats@1.0
@@ -26,78 +29,49 @@ parameters:
 
 jobs:
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
-  integration-test-1:
-    docker:
-      - image: cimg/base:stable
+  integration-test-naming:
+    executor: python/default
     steps:
       - checkout
-      # "greet" is a sample command packaged with this orb config.
-      # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
-      # Push new changes first, before adding new tests to your config.
-      - precheck/greet
+      - run:
+          name: "Test"
+          working_directory: ~/project/tests
+          command: |
+            python -m unittest discover -s precheck-orb/tests -p test_naming_validation.py
 
 workflows:
-  # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
-  # This workflow will run on every commit
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
-      - shellcheck/check:
-          dir: ./src/scripts
-          exclude: SC2148
-      # optional: Run BATS tests against your scripts
-      - bats/run:
-          path: ./src/tests
       # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
+          name: publish-dev
           orb-name: tiendanube/precheck
           alpha-version-ref: "dev:alpha"
           publish-token-variable: "CIRCLE_TOKEN"
           publish-alpha-version: true
-          context: orb-publishing # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
+          context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user.
           requires:
             - orb-tools/lint
             - orb-tools/pack
-            - bats/run
-            - shellcheck/check
-      # Trigger an integration workflow to test the
-      # dev:${CIRCLE_SHA1:0:7} version of your orb
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
-          context: orb-publishing
           requires:
-            - orb-tools/publish-dev
-
-  # This `integration-test_deploy` workflow will only run
-  # when the run-integration-tests pipeline parameter is set to true.
-  # It is meant to be triggered by the "trigger-integration-tests-workflow"
-  # job, and run tests on <your orb>@dev:${CIRCLE_SHA1:0:7}.
+            - publish-dev
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      # Run any integration tests defined within the `jobs` key.
-      - integration-test-1
-      # Publish a semver version of the orb. relies on
-      # the commit subject containing the text "[semver:patch|minor|major|skip]"
-      # as that will determine whether a patch, minor or major
-      # version will be published or if publishing should
-      # be skipped.
-      # e.g. [semver:patch] will cause a patch version to be published.
-      - python/test:
-          name: job-test-poetry
-          pkg-manager: poetry
-          test-tool: pytest
-          app-dir: ~/project/tests
+      - integration-test-naming
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: tiendanube/precheck
-          context: orb-publishing
+          context: orbs
           add-pr-comment: false
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
-            - integration-test-1
+            - integration-test-naming
           filters:
             branches:
               only:

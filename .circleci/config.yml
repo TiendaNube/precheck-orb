@@ -45,6 +45,11 @@ workflows:
     jobs:
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
+      - orb-tools/trigger-integration-tests-workflow:
+          name: trigger-integration-dev
+          requires:
+            - orb-tools/lint
+            - orb-tools/pack
       # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
           name: publish-dev
@@ -56,10 +61,7 @@ workflows:
           requires:
             - orb-tools/lint
             - orb-tools/pack
-      - orb-tools/trigger-integration-tests-workflow:
-          name: trigger-integration-dev
-          requires:
-            - publish-dev
+            - trigger-integration-dev
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
@@ -71,6 +73,8 @@ workflows:
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
+            - orb-tools/lint
+            - orb-tools/pack
             - integration-test-naming
           filters:
             branches:

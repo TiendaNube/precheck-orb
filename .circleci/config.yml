@@ -60,6 +60,8 @@ workflows:
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
+      - orb-tools/lint # Lint Yaml files
+      - orb-tools/pack # Pack orb source
       - integration-test-naming:
           context: orbs
       - orb-tools/dev-promote-prod-from-commit-subject:

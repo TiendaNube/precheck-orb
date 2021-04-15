@@ -1,9 +1,9 @@
 description: >
   This command is a Naming Convention Validation to use in k8s namespace.
 parameters:
-  name:
-    type: string
+  name_to_validate:
     description: "Repository or Branch Name for naming convention validation"
+    type: string
 steps:
   - run:
       environment:

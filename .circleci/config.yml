@@ -34,7 +34,7 @@ jobs:
       - run:
           name: "Test Naming Convention"
           command: |
-            export NAME_TO_VALIDATE=branch;python -m unittest discover -s ~/project/scripts -p test_naming_validation.py
+            export NAME_TO_VALIDATE=branch;python -m unittest discover -s ~/project/src/scripts -p test_naming_validation.py
 
 workflows:
   precheck:

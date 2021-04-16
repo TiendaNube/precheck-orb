@@ -1,9 +1,7 @@
 description: Naming Convention Validation to use in k8s namespace.
 
-orbs:
-  python: circleci/python@1.3.4
-
-executor: python/default
+docker:
+  - image: cimg/python:2.7.18
 
 parameters:
   name_to_validate:

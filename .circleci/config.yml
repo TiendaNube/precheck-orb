@@ -52,6 +52,8 @@ workflows:
           publish-alpha-version: true
           context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user..
           requires:
+            - orb-tools/lint # Lint Yaml files
+            - orb-tools/pack # Pack orb source
             - integration-test-naming
   integration-tests_prod-release:
     when: << pipeline.parameters.run-integration-tests >>

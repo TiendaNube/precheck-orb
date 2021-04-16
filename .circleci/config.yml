@@ -43,12 +43,6 @@ workflows:
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
       - integration-test-naming
-      - orb-tools/trigger-integration-tests-workflow:
-          name: trigger-integration-dev
-          requires:
-            - orb-tools/lint
-            - orb-tools/pack
-            - integration-test-naming
       # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
           name: publish-dev
@@ -58,27 +52,10 @@ workflows:
           publish-alpha-version: true
           context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user..
           requires:
-            - trigger-integration-dev
-  integration-test_deploy:
+            - integration-test-naming
+  integration-tests_prod-release:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
-      - integration-test-naming:
-          context: orbs
-          requires:
-            - orb-tools/lint
-            - orb-tools/pack
-      - orb-tools/dev-promote-prod-from-commit-subject:
-          orb-name: tiendanube/precheck
-          context: orbs
-          add-pr-comment: false
-          fail-if-semver-not-indicated: true
-          publish-version-tag: false
-          requires:
-            - integration-test-naming
-          filters:
-            branches:
-              only:
-                - master
-                - main
+      - integration-test-naming

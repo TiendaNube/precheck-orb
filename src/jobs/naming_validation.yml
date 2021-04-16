@@ -1,6 +1,9 @@
 description: Naming Convention Validation to use in k8s namespace.
 
-executor: default
+orbs:
+  python: circleci/python@1.3.4
+
+executor: python/default
 
 parameters:
   name_to_validate:

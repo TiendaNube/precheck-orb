@@ -5,35 +5,49 @@ name = os.getenv('NAME_TO_VALIDATE')
 
 
 def check_upper():
-    if any(s.isupper() for s in name):
-        print('Branch name {} contains an uppercase character.'.format(name))
-        exit(1)
+    if name is not None:
+        if any(s.isupper() for s in name):
+            print('Branch name {} contains an uppercase character.'.format(name))
+            return True
+        else:
+            return False
     else:
-        return True
+        print('Branch name is empty')
+        return False
 
 
 def check_str():
     regex = re.compile("[@_!#$%^&*()<>?|\}{~:]")
-    if regex.search(name) is not None:
-        print('Branch name {} contains non dns compliant characters.'.format(name))
-        exit(1)
+    if name is not None:
+        if regex.search(name) is not None:
+            print('Branch name {} contains non dns compliant characters.'.format(name))
+            return True
+        else:
+            return False
     else:
-        return True
+        print('Branch name is empty')
+        return False
 
 
 def check_length():
-    if len(name) > 52:
-        print("The {} name to use as namespace in k8s, must be less or equal to 52 characters, "
-              "please rename it\n".format(name))
-        exit(1)
+    if name is not None:
+        if len(name) > 52:
+            print("The {} name to use as namespace in k8s, must be less or equal to 52 characters, "
+                  "please rename it\n".format(name))
+            return True
+        else:
+            return False
     else:
-        return True
+        print('Branch name is empty')
+        return False
 
 
 if __name__ == '__main__':
-    if check_upper() and check_str() and check_length():
-        exit(0)
+    if name is not None:
+        if check_upper() == False and check_str() == False and check_length() == False:
+            exit(0)
+        else:
+            exit(1)
     else:
+        print('Branch name is empty')
         exit(1)
-
-

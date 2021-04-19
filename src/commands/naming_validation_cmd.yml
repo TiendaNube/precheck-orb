@@ -7,9 +7,10 @@ parameters:
     type: string
 
 steps:
+  - checkout
   - run:
       environment:
         NAME_TO_VALIDATE: <<parameters.name_to_validate>>
       name: Naming Convention Validation
-      command: 'python "\<<include(scripts/naming_validation.py)>>"'
+      command: python ~/project/src/scripts/naming_validation.py
 

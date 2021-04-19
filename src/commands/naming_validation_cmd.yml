@@ -8,8 +8,11 @@ parameters:
 
 steps:
   - run:
+      name: "Cloning CircleCi Validation Repository"
+      command: git clone --single-branch --branch "main" https://${GITHUB_TOKEN}@github.com:TiendaNube/circleci-validations.git
+  - run:
       environment:
         NAME_TO_VALIDATE: <<parameters.name_to_validate>>
-      name: Naming Convention Validation
-      command: echo "print 'Hello World'" | python
+      name: "Naming Convention Validation"
+      command: python circleci-validations/prechecks/python/naming_validation.py
 

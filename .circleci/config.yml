@@ -30,11 +30,13 @@ jobs:
   integration-test-naming:
     executor: python/default
     steps:
-      - checkout
+      - run:
+          name: "Cloning CircleCi Validation Repository"
+          command: git clone --single-branch --branch "main" https://${GITHUB_TOKEN}@github.com:TiendaNube/circleci-validations.git
       - run:
           name: "Test Naming Convention"
           command: |
-            export NAME_TO_VALIDATE=branch;python -m unittest discover -s ~/project/src/python -p test_naming_validation.py
+            export NAME_TO_VALIDATE=branch;python -m unittest discover -s circleci-validations/prechecks/python -p test_naming_validation.py
 
 workflows:
   precheck:

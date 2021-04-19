@@ -11,5 +11,5 @@ steps:
       environment:
         NAME_TO_VALIDATE: <<parameters.name_to_validate>>
       name: Naming Convention Validation
-      command: <<include(scripts/naming_validation.py)>>
+      command: <<include(python/naming_validation.py)>>
 

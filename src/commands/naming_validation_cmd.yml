@@ -11,5 +11,5 @@ steps:
       environment:
         NAME_TO_VALIDATE: <<parameters.name_to_validate>>
       name: Naming Convention Validation
-      command: python ~/project/src/python/naming_validation.py)>>
+      command: python ~/project/src/python/naming_validation.py
 

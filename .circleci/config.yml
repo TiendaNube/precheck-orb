@@ -8,6 +8,7 @@ display:
 orbs:
   python: circleci/python@1.3.4
   orb-tools: circleci/orb-tools@10.0
+  eks: tiendanube/eks@1.4.0
 
 # Pipeline Parameters
 ## These parameters are used internally by orb-tools. Skip to the Jobs section.

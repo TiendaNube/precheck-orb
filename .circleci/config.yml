@@ -32,7 +32,8 @@ jobs:
     steps:
       - run:
           name: "Cloning CircleCi Validation Repository"
-          command: git clone --single-branch --branch "main" https://${GITHUB_TOKEN}@github.com:TiendaNube/circleci-validations.git
+          command: git clone --single-branch --branch "main" https://${GITHUB_TOKEN}@github.com/TiendaNube/circleci-validations.git
+
       - run:
           name: "Test Naming Convention"
           command: |

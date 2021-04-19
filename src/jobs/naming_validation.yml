@@ -7,7 +7,12 @@ parameters:
   name_to_validate:
     type: string
     description: "Repository or Branch Name for naming convention validation"
+  context:
+    type: string
+    description: "Context to use"
+
 
 steps:
   - naming_validation_cmd:
       name_to_validate: << parameters.name_to_validate >>
+      context: << parameters.context >>

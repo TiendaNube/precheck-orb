@@ -33,6 +33,7 @@ jobs:
       - run:
           name: "Cloning CircleCi Validation Repository"
           command: git clone --single-branch --branch "main" https://${GITHUB_TOKEN}@github.com:TiendaNube/circleci-validations.git
+          context: microservices
       - run:
           name: "Test Naming Convention"
           command: |
@@ -52,7 +53,7 @@ workflows:
           alpha-version-ref: "dev:alpha"
           publish-token-variable: "CIRCLE_TOKEN"
           publish-alpha-version: true
-          context: orbs # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user..
+          context: microservices # A restricted context containing your private publishing credentials. Will only execute if approved by an authorized user..
           requires:
             - orb-tools/lint # Lint Yaml files
             - orb-tools/pack # Pack orb source

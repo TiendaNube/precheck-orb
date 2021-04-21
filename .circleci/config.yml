@@ -40,6 +40,12 @@ jobs:
           command: |
             export NAME_TO_VALIDATE=branch;python3 -m unittest discover -s circleci-validations/prechecks/python -p test_naming_validation.py
 
+orb_promotion_filters: &orb_promotion_filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+
 workflows:
   precheck:
     unless: << pipeline.parameters.run-integration-tests >>
@@ -60,9 +66,19 @@ workflows:
             - orb-tools/lint # Lint Yaml files
             - orb-tools/pack # Pack orb source
             - integration-test-naming
-  integration-tests_prod-release:
-    when: << pipeline.parameters.run-integration-tests >>
+
+  # Tag-triggered workflow to promote a dev orb into production.
+  # The tag is expected to have been applied manually.
+  tag-triggered-orb-publishing:
+    unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/lint # Lint Yaml files
-      - orb-tools/pack # Pack orb source
-      - integration-test-naming
+      - hold-for-approval:
+          type: approval
+          filters: *orb_promotion_filters
+      - orb-tools/dev-promote-prod-from-git-tag:
+          orb-name: tiendanube/precheck
+          context: orbs
+          add-pr-comment: false
+          requires:
+            - hold-for-approval
+          filters: *orb_promotion_filters

@@ -78,6 +78,7 @@ workflows:
       - orb-tools/dev-promote-prod-from-git-tag:
           orb-name: tiendanube/precheck
           context: orbs
+          required-branch: main
           add-pr-comment: false
           requires:
             - hold-for-approval

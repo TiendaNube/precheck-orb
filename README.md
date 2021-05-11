@@ -13,7 +13,16 @@ This orb is used to add pre-validations that our application/service should sati
 
 We welcome [issues](https://github.com/TiendaNube/precheck-orb/issues) to and [pull requests](https://github.com/TiendaNube/precheck-orb/pulls) against this repository!
 
-### How to Publish
+### How to Publish DEV
+* Create and push a branch with your new features.
+* Go to [circleci](https://app.circleci.com/pipelines/github/TiendaNube/precheck-orb)
+* Select your Branch/Commit and the workflow `precheck` and verify if it is `green`
+* To test it, add it in your `config.yml` like this: 
+````yaml
+orbs:
+  precheck: tiendanube/precheck@dev:<YOUR-COMMIT-SHA>
+````
+### How to Publish PROD
 * Create and push a branch with your new features.
 * When ready to publish a new production version, create a Pull Request from _feature branch_ to `master`.
 * The title of the pull request must contain a special semver tag: `[semver:<segement>]` where `<segment>` is replaced by one of the following values.
@@ -28,8 +37,14 @@ We welcome [issues](https://github.com/TiendaNube/precheck-orb/issues) to and [p
 Example: `[semver:major]`
 
 * Squash and merge. Ensure the semver tag is preserved and entered as a part of the commit message.
-* On merge, after manual approval, the orb will automatically be published to the Orb Registry.
+* On merge, after run OK(`green`) in [circleci](https://app.circleci.com/pipelines/github/TiendaNube/precheck-orb) tag it.
+````bash
+$ git tag minor-release-vx.x.x
+$ git push origin main --tags
+````
 
+* Go to [circleci](https://app.circleci.com/pipelines/github/TiendaNube/precheck-orb)
+* Select workflow `tag-triggered-orb-publishing` approve it.
+* Once step `orb-tools/dev-promote-prod-from-git-tag` run ok(`green`), you can use it.
 
-For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/orbs).
 
